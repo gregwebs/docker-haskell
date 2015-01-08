@@ -47,10 +47,6 @@ This image ships a minimal Haskell toolchain with the following packages:
 ```
 FROM haskell:7.8
 
-ENV LANG     C.UTF-8
-ENV LC_ALL   C.UTF-8
-ENV LANGUAGE C.UTF-8
-
 RUN useradd -m -d /home/haskell -s /bin/bash haskell
 RUN echo "haskell ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/haskell && chmod 0440 /etc/sudoers.d/haskell
 ENV HOME /home/haskell
