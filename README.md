@@ -42,6 +42,31 @@ This image ships a minimal Haskell toolchain with the following packages:
     ENTRYPOINT ["/root/.cabal/bin/mazesofmonad"]
 ```
 
+* Build from a bash shell inside the docker image
+
+```
+FROM haskell:7.8
+
+ENV LANG     C.UTF-8
+ENV LC_ALL   C.UTF-8
+ENV LANGUAGE C.UTF-8
+
+RUN useradd -m -d /home/haskell -s /bin/bash haskell
+RUN echo "haskell ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/haskell && chmod 0440 /etc/sudoers.d/haskell
+ENV HOME /home/haskell
+WORKDIR /home/haskell
+USER haskell
+```
+
+Mount your code base into the docker image
+
+```
+sudo docker build -t dev .
+sudo docker run -v `pwd`:/home/haskell --rm -i -t dev /bin/bash
+```
+
+Now run `cabal install`, etc from within the bash shell in the image.
+
 * Iteratively develop then ship a Haskell app with a Dockerfile utilizing the
 build cache:
 
